@@ -1,0 +1,20 @@
+- hosts: all
+  name: check if git package is installed
+  tasks:
+    - name: check package state
+      command: git --version
+      register: package_state
+    - name: output version to file if check is okay
+      lineinfile:
+        path: /tmp/is_git_installed.txt
+        create: yes
+        line: git --version
+        state: present
+      when: package_state.rc == 0
+    - name: output missing
+      lineinfile:
+        path: /tmp/is_git_installed.txt
+        create: yes
+        state: present
+        line: "Oops, git is missing"
+        when: package_state.rc !=0
