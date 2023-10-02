@@ -1,0 +1,10 @@
+- name: check if vulnerable to shellshock
+  hosts: all
+  vars:
+    remote_dest: /usr/local/bin/report_status.sh
+  tasks:
+    - shell: sh "{{ remote_dest }}"
+      register: is_vulnerable
+    - package:
+        name: bash
+        state: lastest
