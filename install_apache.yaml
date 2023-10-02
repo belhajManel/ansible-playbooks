@@ -1,0 +1,12 @@
+- hosts: localhost
+  tasks:
+    - name: install http webserver
+      package:
+        name: httpd
+        state: present
+      when: ansible_distribution == "Centos"
+    - name: instal apache webserver
+      package:
+        name: apache2
+        state: present
+      when: ansible_distribution == "Ubuntu"
