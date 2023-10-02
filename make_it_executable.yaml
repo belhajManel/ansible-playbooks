@@ -1,3 +1,4 @@
+---
 - name: check if script is executable
   hosts: all
   tasks:
@@ -9,6 +10,24 @@
         create: yes
         line: "file is not executable, making it executable..."
       when: is_executed.rc !=0
+    - file:
+        mode: "u+x,g+x,o+x"
+        path: report_status.sh
+      when: is_executed.rc !=0
+
+---
+- name: check if script is executable second method
+  hosts: all
+  tasks:
+    - stat:
+        path: report_status.sh
+      register: is_executed
+    - lineinfile:
+        path: /tmp/change.log
+        state: present
+        create: yes
+        line: "file is not executable, making it executable..."
+      when: is_executed.stat.exists and is_executed.stat.executable
     - file:
         mode: "u+x,g+x,o+x"
         path: report_status.sh
