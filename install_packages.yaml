@@ -7,4 +7,4 @@
       package:
         name: "{{ package_name }}"
         state: present
-      when: package_name  == "htop"
+      when: extra_package is defined and package_name  == "htop"
