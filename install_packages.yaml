@@ -1,0 +1,10 @@
+- name: Install a package specified by the extra_package variable
+  hosts: web2
+  vars:
+    package_name: "{{ extra_package }}"
+  tasks:
+    - name: install package if htop
+      package:
+        name: "{{ package_name }}"
+        state: present
+      when: package_name  == "htop"
