@@ -1,0 +1,19 @@
+- name: ignore httpd errors
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: do not remove this task
+      command: /bin/false
+      register: results
+      ignore_errors: yes
+
+    - shell: "echo {{ results.msg }} > /tmp/output"
+
+    - name: start httpd
+      state: started
+      enabled: yes
