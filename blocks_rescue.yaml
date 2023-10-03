@@ -1,0 +1,17 @@
+- name: tasks by block
+  hosts: all
+  tasks:
+    - name: Install, configure, and start httpd
+      block:
+        - name: install httpd
+          yum:
+            name: httpd
+            state: present
+        - name: start httpd
+          service:
+            name: httpd
+            enabled: yes
+      when: ansible_distribution == "CentOs"
+      rescue:
+        - debug:
+            var: "playbook failed for {{ inventory_hostname }}"
