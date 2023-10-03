@@ -1,0 +1,14 @@
+- hosts: all
+  tasks:
+    - name: create a file
+      block:
+        - file:
+            path: /tmp/file.txt
+            state: touch
+        - name: this will fail
+          command: /bin/false
+        - debug:
+            msg: "this will never run"
+      always:
+        - debug:
+            msg: "this task always runs!"
