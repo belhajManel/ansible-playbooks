@@ -1,0 +1,23 @@
+- name: exit playbook if a single task fails
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: check httpd error logs
+      command: cat /var/log/httpd/error_log
+      register: results
+
+    - name: start httpd
+      service:
+        name: httpd
+        state: started
+      failed_when: '"Error" in results.stdout'
+
+    - name: create a file
+      file:
+        path: /tmp/file
+        state: touch
